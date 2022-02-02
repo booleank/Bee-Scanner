@@ -8,3 +8,7 @@ The Python libraries required to run the scanner are located in the requirements
 ```
 pip install -r /path/to/requirements.txt
 ```
+Here is a sample format to run in command prompt:
+```
+scanner.py "C:\Users\me\bee_project\bee_images"
+```
