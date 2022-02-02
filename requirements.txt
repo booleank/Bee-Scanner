@@ -1,0 +1,5 @@
+numpy==1.19.3
+Pillow==9.0.0
+pylibdmtx==0.1.9
+pyzbar==0.1.8
+opencv_python==4.5.5.62
