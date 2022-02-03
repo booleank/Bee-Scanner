@@ -32,7 +32,7 @@ def decoder(image_path, dilate_kernel):
                                       cv2.THRESH_BINARY_INV ,5,9) 
     #increases the white region in the image
     #may require tuning depending on the location of barcode relative to other black area
-    kernel = np.ones(kernel = dilate_kernel, np.uint8) 
+    kernel = np.ones(dilate_kernel, np.uint8) 
     thresh = cv2.dilate(thresh,kernel, iterations = 1)
 
     #remove noise based on a kernel size 
