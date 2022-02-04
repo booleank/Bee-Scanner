@@ -80,18 +80,26 @@ if __name__ == "__main__":
         desk_dir = os.chdir(dir) 
         
         renamed_image_folder = "renamed images"
+        unreadable_image_folder = "unreadable images"
 
         #check if default folder "renamed images" exists, if so, ask user for a new name
         if os.path.exists(os.path.join(dir,renamed_image_folder)):
             renamed_image_folder = input("Since 'renamed image' file exists already, choose a different for the folder:")
-        
+       
+        #check if default folder "unreadable images" exists, if so, ask user for a new name
+        if os.path.exists(os.path.join(dir,unreadable_image_folder)):
+            unreadable_image_folder = input("Since 'unreadable image' file exists already, choose a different for the folder:")
+       
         #make a new folder of the name inputted
         os.mkdir(renamed_image_folder)
-
+        os.mkdir(unreadable_image_folder)
+        
         #change directory
         renamed_dir = os.chdir(os.path.join(dir,renamed_image_folder))
-        
         renamed_images_path = os.getcwd()
+        
+        unreadable_dir = os.chdir(os.path.join(dir,unreadable_image_folder))
+        unreadable_images_path = os.getcwd()
         
         num_of_success = 0
         
@@ -100,6 +108,9 @@ if __name__ == "__main__":
         print("Processing the images... This may take a while.")
         
         for file in os.listdir(path):
+            
+            #preserve original extention format
+            file_extension = file.split('.')[1]
                 
             image_path = os.path.join(path,file)
             result = decoder(image_path, (7,7))
@@ -107,15 +118,17 @@ if __name__ == "__main__":
             if len(result) != 0:
                 #check if barcode reader works
                 #copy the image from original, rename the file, and place into the renamed file 
-                shutil.copy(image_path, os.path.join(renamed_images_path,result +".JPG")) 
+                shutil.copy(image_path, os.path.join(renamed_images_path,result + "." + file_extension)) 
                 num_of_success += 1
             else:
                 #check datamatrix reader 
                 result = decoder(image_path,(5,5))
                 if len(result) != 0:
-                    shutil.copy(image_path, os.path.join(renamed_images_path,result+".JPG"))
+                    shutil.copy(image_path, os.path.join(renamed_images_path,result + "." + file_extension))
                     num_of_success += 1
                 else:
+                    # copy unreadable image to unreadable folder, with original name
+                    shutil.copy(image_path, os.path.join(unreadable_images_path,file))
                     print("{} could not be read".format(image_path))
                     num_of_unsuccessful += 1
         print("\nTotal Renamed Images: {} \nTotal Unsuccessful Readings: {}".format\
